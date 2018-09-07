@@ -23,10 +23,10 @@ More info about Webex Teams: https://developer.webex.com/
 ```
 </br>
 
-### **How to, download code and build image. 
+### **How to, download code and build image.**
 ```
 1. Install docker, https://docs.docker.com/v17.12/install/
-2. Open terminal or powershell. 
+2. Open terminal or powershell
 3. mkdir getDriftlaget
 4. cd getDriftlaget
 5. git clone https://github.com/naitmare01/getDriftlaget
