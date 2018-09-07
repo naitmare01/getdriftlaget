@@ -12,7 +12,7 @@ E.g. _"docker run get-driftlaget --bottoken 'secret bot access token' --roomid '
 
 More info about Webex Teams: https://developer.webex.com/
 
-**How to**
+### **How to**
 ```
 1. docker pull davidberndtsson/get-driftlaget
 2. "docker run get-driftlaget --bottoken <secret bot access token> --roomid <secret room id>"
