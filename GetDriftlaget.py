@@ -98,6 +98,7 @@ def buildJson(jsonObject):
 
     return result
 
+#Init DB
 def initDb(dbPath, tableName):
     #Create db
     db_init = Flata(dbPath, storage=JSONStorage)
@@ -108,12 +109,20 @@ def initDb(dbPath, tableName):
 
     return db
 
+#build log message
 def log(msg):
     timestamp = time.ctime()
     loggmsg = {'Timestamp': str(timestamp), 'Message': msg}
     return loggmsg
 
+#Counts how many log entries. 
+def countLog(data):
+    if len(data) > 100:
+        return True
+    else:
+        return False
 
+#Main
 def main(sc):
 
     args = arguments()
@@ -174,9 +183,14 @@ def main(sc):
             logmessage = log("New remove")
             logdb.insert(logmessage)
     
-    #Restart the script. 
+    #Restart the script. Purge logdata if over 100 entries.
     logmessage = log("Restarting script")
     logdb.insert(logmessage)
+    logdata = json.dumps(logdb.all(), indent=2)
+    logdatadict = json.loads(logdata)
+    logDataCount = countLog(logdatadict)
+    if logDataCount == True:
+        logdb.purge()
     s.enter(30, 1, main, (sc,))
 
 if __name__ == '__main__':
