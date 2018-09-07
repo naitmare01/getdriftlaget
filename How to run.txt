@@ -1,5 +1,5 @@
 ###Test room
-docker run get-driftlaget --bottoken "OWRmMzY1ZGMtNTViZC00MDkzLWFkZjItMmM3YTg3MWU1NTAxZmFiNTg2NzAtOWY2" --roomid "Y2lzY29zcGFyazovL3VzL1JPT00vZTVjODg1ODAtYjA1Ni0xMWU4LWI2YmMtNjdiNTlhZTEwMGY0"
+docker run davidberndtsson/get-driftlaget --bottoken "OWRmMzY1ZGMtNTViZC00MDkzLWFkZjItMmM3YTg3MWU1NTAxZmFiNTg2NzAtOWY2" --roomid "Y2lzY29zcGFyazovL3VzL1JPT00vZTVjODg1ODAtYjA1Ni0xMWU4LWI2YmMtNjdiNTlhZTEwMGY0"
 
 ###Driftstatusmeddelanden-autoimport room
-docker run get-driftlaget --bottoken "OWRmMzY1ZGMtNTViZC00MDkzLWFkZjItMmM3YTg3MWU1NTAxZmFiNTg2NzAtOWY2" --roomid "Y2lzY29zcGFyazovL3VzL1JPT00vZTAxZmE0MjAtYjAzNy0xMWU4LTgxY2MtNmIzMTI4ZDM5MjA2"
+docker run davidberndtsson/get-driftlaget --bottoken "OWRmMzY1ZGMtNTViZC00MDkzLWFkZjItMmM3YTg3MWU1NTAxZmFiNTg2NzAtOWY2" --roomid "Y2lzY29zcGFyazovL3VzL1JPT00vZTAxZmE0MjAtYjAzNy0xMWU4LTgxY2MtNmIzMTI4ZDM5MjA2"
