@@ -3,7 +3,7 @@ Docker container that polls the API for goo.gl/XXKFxQ. Result is posted in a Web
 
 **The container must be run with two arguments.**
 </br>
-E.g. "docker run get-driftlaget --bottoken 'secret bot access token' --roomid 'secret room id'"
+E.g. _"docker run get-driftlaget --bottoken 'secret bot access token' --roomid 'secret room id'"_
 
 > Prerequisites
 > - A Webex Teams account
@@ -12,8 +12,10 @@ E.g. "docker run get-driftlaget --bottoken 'secret bot access token' --roomid 's
 
 More info about Webex Teams: https://developer.webex.com/
 
-How to
+**How to**
+```
 1. docker pull davidberndtsson/get-driftlaget
 2. "docker run get-driftlaget --bottoken <secret bot access token> --roomid <secret room id>"
+```
   
 
