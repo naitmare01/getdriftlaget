@@ -1,7 +1,7 @@
 # getDriftlaget
 Docker container that polls the API for the Church of Sweden current IT operation status(goo.gl/XXKFxQ). Result is then posted in a Webex Temas Space from a Webex Teams Bot. Only new result will get posted, the API will be polled every 30 seconds. 
 
-![alt text](https://github.com/naitmare01/getDriftlaget/blob/master/Screen%20Shot%202018-09-07%20at%2022.18.45.png)
+![alt text](https://github.com/naitmare01/getDriftlaget/blob/master/Private/Screen%20Shot%202018-09-07%20at%2022.18.45.png)
 
 **The container must be run with two arguments.**
 </br>
