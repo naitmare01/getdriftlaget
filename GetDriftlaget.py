@@ -1,9 +1,9 @@
 import requests, json, time, sched, sys, argparse
 from sys import argv
 from flata import Flata, Query, where
-from modules import cisco
-from modules import flataDb
-from modules import driftlagetApi
+from Modules import cisco
+from Modules import flataDb
+from Modules import driftlagetApi
 
 
 #Handle command line arguments
