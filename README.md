@@ -21,8 +21,8 @@ More info about Webex Teams: https://developer.webex.com/
 
 ### **How to, pull from docker hub(recomended).**
 ```
-1. docker pull davidberndtsson/get-driftlaget
-2. docker run davidberndtsson/get-driftlaget --bottoken <secret bot access token> --roomid <secret room id>
+1. docker pull davidberndtsson/getdriftlaget
+2. docker run davidberndtsson/getdriftlaget --bottoken <secret bot access token> --roomid <secret room id>
 ```
 </br>
 
