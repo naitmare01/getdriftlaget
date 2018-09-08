@@ -1,6 +1,6 @@
 import argparse, json,sys
-from flata import Flata, Query, where
-from flata.storages import JSONStorage
+from modules import flataDb
+#import flataDb
 
 def arguments():
     #Handle command line arguments
@@ -19,16 +19,6 @@ def arguments():
     
     return args
 
-def initDb(dbPath, tableName):
-    #Create db
-    db_init = Flata(dbPath, storage=JSONStorage)
-    #Create first table
-    db_init.table(tableName, id_field = 'id')
-
-    db = db_init.get(tableName)
-
-    return db
-
 def main():
     args = arguments()
 
@@ -38,19 +28,19 @@ def main():
     if args.all:
         tables = 'driftlaget', 'log'
         for i in tables:
-            db = initDb(dbPath, i)
+            db = flataDb.initDb(dbPath, i)
             response = db.all()
             print(json.dumps(response, indent=2))
     
     if args.log:
         tables = 'log'
-        db = initDb(dbPath, tables)
+        db = flataDb.initDb(dbPath, tables)
         response = db.all()
         print(json.dumps(response, indent=2))
 
     if args.driftlaget:
         tables = 'driftlaget'
-        db = initDb(dbPath, tables)
+        db = flataDb.initDb(dbPath, tables)
         response = db.all()
         print(json.dumps(response, indent=2))
 
