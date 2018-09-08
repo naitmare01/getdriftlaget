@@ -1,7 +1,6 @@
 FROM ubuntu:latest
 LABEL David Berndtsson
 RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
 RUN apt-get -qqy install python3
 RUN apt-get -qqy install python3-pip
 COPY . /main
