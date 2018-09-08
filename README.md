@@ -12,7 +12,8 @@ E.g. _"docker run get-driftlaget --bottoken 'secret bot access token' --roomid '
 > ### Prerequisites
 > - A Webex Teams account
 > - A Webex Teams Bot
-> - A Webex Teams Room
+> - A Webex Teams Space
+> - Add your bot to the space that should get notifications
 
 More info about Webex Teams: https://developer.webex.com/
 
