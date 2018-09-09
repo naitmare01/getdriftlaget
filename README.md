@@ -38,7 +38,7 @@ More info about Webex Teams: https://developer.webex.com/
 7. docker run get-driftlaget --bottoken 'secret bot access token' --roomid 'secret room id'
 ```
 
-### **Optional parameters when running image **
+### **Optional parameters when running image.**
 ```
 --pollinginterval
 The polling intervall in seconds. If left untouched default is 30.
@@ -48,4 +48,8 @@ I.e. how often the bot should poll the API.
 --url
 API URL to for the Church of Sweden current IT operation status(goo.gl/XXKFxQ). If left untouched default is https://webapp.svenskakyrkan.se/driftlaget/v2/api/news
 
+```
+```
+--logthreshold
+Number of entries to be keep in the log database before the databse is purged. If left untouched default is 100 logs.
 ```
