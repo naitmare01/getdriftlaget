@@ -1,8 +1,6 @@
-import requests, json, sched, sys, argparse, time
+import sched, sys, argparse, time
 from sys import argv
-from flata import Flata, where
 from Modules import cisco, flataDb, driftlagetApi, log
-
 
 #Handle command line arguments
 def arguments():
