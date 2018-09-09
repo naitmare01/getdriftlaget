@@ -1,5 +1,7 @@
 import requests, json
 from datetime import datetime
+from flata import Query, where
+from . import log
 
 
 #Send data to Cisco Teams space. 
@@ -64,3 +66,28 @@ def formatTime(time):
     formatedTime = datetime.strptime(formatedTime, "%Y%m%d%H%M%S")
 
     return formatedTime
+
+
+#Post into Webex space and update database.
+def postToSpace(objectset, database, logdb, botToken, roomId):
+    q = Query()
+    for n in objectset:
+        incidentIddb = n["IncidentId"]
+        lastUpdateddb = n["LastUpdated"]
+        entryExist = database.search((q.IncidentId == incidentIddb))
+
+        #If entry is missing in the database. Insert into database and send to Webex.
+        if not entryExist:
+            database.insert(n)
+            send_it(botToken, roomId, n)
+
+            logdb.insert(log.log("New insert on object with incidentID of: " + incidentIddb))
+        else:
+            newEntries = database.search((q.IncidentId == incidentIddb) & (q.LastUpdated < lastUpdateddb))
+
+            #Update new entries that have newer lastUpdated and send to Webex.
+            if newEntries:
+                database.update(n, where('IncidentId') == incidentIddb)
+                send_it(botToken, roomId, n)
+
+                logdb.insert(log.log("New update on object with incidentID of: " + incidentIddb))

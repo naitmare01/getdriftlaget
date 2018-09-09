@@ -1,6 +1,7 @@
+import json
 from flata import Flata, Query, where
 from flata.storages import JSONStorage
-import json
+from . import log
 
 def initDb(dbPath, tableName):
     #Create db
@@ -26,3 +27,14 @@ def countLog(data, numberOfLogs):
     else:
         return False
 
+#Remove stale records from db that doesnt exist on the Driftlage.
+def removeStaleRecords(objectset, database, logdb):
+    q = Query()
+    for i in database.all():
+        IncId = i["IncidentId"]
+        entryInDb = filter(lambda x : x['IncidentId'] == IncId, objectset)
+        entryInDb = list(entryInDb)
+
+        if not entryInDb:
+            database.remove(q.IncidentId == IncId)
+            logdb.insert(log.log("New remove on object with incidentID of: " + IncId))

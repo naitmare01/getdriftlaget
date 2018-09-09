@@ -1,9 +1,7 @@
-import requests, json, time, sched, sys, argparse
+import requests, json, sched, sys, argparse, time
 from sys import argv
-from flata import Flata, Query, where
-from Modules import cisco
-from Modules import flataDb
-from Modules import driftlagetApi
+from flata import Flata, where
+from Modules import cisco, flataDb, driftlagetApi, log
 
 
 #Handle command line arguments
@@ -14,6 +12,9 @@ def arguments():
     requiredNamed = parser.add_argument_group('required named arguments')
     requiredNamed.add_argument('-b', '--bottoken', help='Access token for your bot.', required=True)
     requiredNamed.add_argument('-r', '--roomid', help='The room ID.', required=True)
+    parser.add_argument('-p', '--pollinginterval', help='The polling intervall in seconds. If left untouched default is 30.', type=int, default=30)
+    parser.add_argument('-u', '--url', help='API URL to for the Church of Sweden current IT operation status(goo.gl/XXKFxQ). If left untouched default is https://webapp.svenskakyrkan.se/driftlaget/v2/api/news', default='https://webapp.svenskakyrkan.se/driftlaget/v2/api/news')
+    parser.add_argument('-lt', '--logthreshold', help='Number of entries to be keep in the log database before the databse is purged. If left untouched default is 100', type=int, default=100)
 
     args = parser.parse_args()
 
@@ -23,81 +24,50 @@ def arguments():
 
     return args
 
-#build log message
-def log(msg):
-    timestamp = time.ctime()
-    loggmsg = {'Timestamp': str(timestamp), 'Message': msg}
-    return loggmsg
-
-
 #Main
 def main(sc):
 
-    args = arguments()
+    #args = arguments()
 
     #Var declaration
-    DriftlagetUrl = "https://webapp.svenskakyrkan.se/driftlaget/v2/api/news"
+    DriftlagetUrl = args.url
     botToken = args.bottoken
+    roomId = args.roomid
+    pollingInterval = args.pollinginterval
+    logthreshold = args.logthreshold
     dbPath = "mydb.json"
     dbTableName = "driftlaget"
     logdbTableName = "log"
-    roomId = args.roomid
 
     #Get data from driftlaget.
     result = driftlagetApi.apiCallPublished(DriftlagetUrl)
     finalResult = cisco.buildJson(result)
 
-    #Start and initialize database
+    #Start and initialize database with two tables
     db = flataDb.initDb(dbPath, dbTableName)
     logdb = flataDb.initDb(dbPath, logdbTableName)
-    q = Query()
 
     #Log to database
-    logdb.insert(log("Starting script"))
+    logdb.insert(log.log("Starting script"))
 
     #Post into Webex space and update database.
-    for n in finalResult:
-        incidentIddb = n["IncidentId"]
-        lastUpdateddb = n["LastUpdated"]
-        entryExist = db.search((q.IncidentId == incidentIddb))
+    cisco.postToSpace(finalResult, db, logdb, botToken, roomId)
 
-        #If entry is missing in the database. Insert into database and send to Webex.
-        if not entryExist:
-            db.insert(n)
-            cisco.send_it(botToken, roomId, n)
+    #Remove objects from database that doesnt exist on the Driftlage and log action to database.
+    flataDb.removeStaleRecords(finalResult, db, logdb)
 
-            logdb.insert(log("New insert"))
-        else:
-            newEntries = db.search((q.IncidentId == incidentIddb) & (q.LastUpdated < lastUpdateddb))
-
-            #Update new entries that have newer lastUpdated and send to Webex.
-            if newEntries:
-                db.update(n, where('IncidentId') == incidentIddb)
-                cisco.send_it(botToken, roomId, n)
-
-                logdb.insert(log("New update"))
-
-    #Remove objects from database that doesnt exist on the Driftlage.
-    for i in db.all():
-        IncId = (i["IncidentId"])
-        entryInDb = filter(lambda x : x['IncidentId'] == IncId, finalResult)
-        entryInDb = list(entryInDb)
-
-        if not entryInDb:
-            db.remove(q.IncidentId == IncId)
-            logdb.insert(log("New remove"))
-    
     #Purge logdata if over 100 entries.
-    flataDb.cleanLogDb(logdb, 100)
+    flataDb.cleanLogDb(logdb, logthreshold)
 
     #Restart the script.
-    logdb.insert(log("Restarting script"))
-    s.enter(30, 1, main, (sc,))
+    logdb.insert(log.log("Restarting script"))
+    s.enter(pollingInterval, 1, main, (sc,))
 
 if __name__ == '__main__':
+    args = arguments()
     # sched is used to schedule main function every 30 seconds.
     # for that once  main function executes in end,
     # we again schedule it to run in 30 seconds
     s = sched.scheduler(time.time, time.sleep)
-    s.enter(30, 1, main, (s,))
+    s.enter(args.pollinginterval, 1, main, (s,))
     s.run()

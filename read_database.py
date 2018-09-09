@@ -29,19 +29,19 @@ def main():
         for i in tables:
             db = flataDb.initDb(dbPath, i)
             response = db.all()
-            print(json.dumps(response, indent=2))
+            print("Reading data from table:", i, '\n', json.dumps(response, indent=2))
     
     if args.log:
         tables = 'log'
         db = flataDb.initDb(dbPath, tables)
         response = db.all()
-        print(json.dumps(response, indent=2))
+        print("Reading data from table:", tables, '\n', json.dumps(response, indent=2))
 
     if args.driftlaget:
         tables = 'driftlaget'
         db = flataDb.initDb(dbPath, tables)
         response = db.all()
-        print(json.dumps(response, indent=2))
+        print("Reading data from table:", tables, '\n', json.dumps(response, indent=2))
 
 
 if __name__ == '__main__':
