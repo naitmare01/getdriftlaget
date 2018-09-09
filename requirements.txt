@@ -1,3 +1,4 @@
+-e ../Modules
 requests
 flata
 pathlib
