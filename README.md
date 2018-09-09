@@ -5,7 +5,7 @@ Docker container that polls the API for the Church of Sweden current IT operatio
 
 **The container must be run with two arguments.**
 
-E.g. _"docker run get-driftlaget --bottoken 'secret bot access token' --roomid 'secret room id'"_
+E.g. _"docker run getdriftlaget --bottoken 'secret bot access token' --roomid 'secret room id'"_
 
 
 --- 
