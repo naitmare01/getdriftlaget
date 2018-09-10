@@ -1,6 +1,6 @@
 import sched, sys, argparse, time
 from sys import argv
-from Modules import cisco, flataDb, driftlagetApi, log
+from services import webexTeams, flataDb, driftlagetApi, log
 
 #Handle command line arguments
 def arguments():
@@ -38,8 +38,8 @@ def main(sc):
     logdbTableName = "log"
 
     #Get data from driftlaget.
-    result = driftlagetApi.apiCallPublished(DriftlagetUrl)
-    finalResult = cisco.buildJson(result)
+    publishedMessages = driftlagetApi.getPublishedMessages(DriftlagetUrl)
+    jsonForWebexTeams = webexTeams.buildJson(publishedMessages)
 
     #Start and initialize database with two tables
     db = flataDb.initDb(dbPath, dbTableName)
@@ -49,10 +49,10 @@ def main(sc):
     logdb.insert(log.log("Starting script"))
 
     #Post into Webex space and update database.
-    cisco.postToSpace(finalResult, db, logdb, botToken, roomId)
+    webexTeams.postToSpace(jsonForWebexTeams, db, logdb, botToken, roomId)
 
     #Remove objects from database that doesnt exist on the Driftlage and log action to database.
-    flataDb.removeStaleRecords(finalResult, db, logdb)
+    flataDb.removeStaleRecords(jsonForWebexTeams, db, logdb)
 
     #Purge logdata if over 100 entries.
     flataDb.cleanLogDb(logdb, logthreshold)

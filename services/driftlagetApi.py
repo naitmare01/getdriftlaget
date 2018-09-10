@@ -1,7 +1,7 @@
 import requests, json
 
 #Get data from Driftlaget. 
-def apiCallPublished(url):
+def getPublishedMessages(url):
     url = url
     querystring = {"state":"published","limit":"20","order":"asc"}
     

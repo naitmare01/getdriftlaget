@@ -1,5 +1,5 @@
 import argparse, json,sys
-from Modules import flataDb
+from services import flataDb
 
 def arguments():
     #Handle command line arguments
