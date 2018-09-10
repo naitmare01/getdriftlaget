@@ -20,6 +20,16 @@ def send_it(token, room_id, message):
             }
     return requests.post("https://api.ciscospark.com/v1/messages/", headers=header, data=json.dumps(data), verify=True)
 
+#Remove post from Cisco Webex teams.
+def remove_it(token, messageId):
+    url = "https://api.ciscospark.com/v1/messages/" + messageId
+
+    headers = {"Authorization": "Bearer %s" % token}
+
+    response = requests.request("DELETE", url, headers=headers)
+
+    return response.text
+
 #Build custom json result of api-call before sending to Cisco Teams space.
 def buildJson(jsonObject):
 
@@ -67,8 +77,7 @@ def formatTime(time):
 
     return formatedTime
 
-
-#Post into Webex space and update database.
+#Post into Cisco Webex space and update database.
 def postToSpace(objectset, database, logdb, botToken, roomId):
     q = Query()
     for n in objectset:
@@ -78,8 +87,11 @@ def postToSpace(objectset, database, logdb, botToken, roomId):
 
         #If entry is missing in the database. Insert into database and send to Webex.
         if not entryExist:
+            sendrespone = send_it(botToken, roomId, n)
+            msgId = sendrespone.json()
+            msgId = msgId["id"]
+            n['msgId'] = msgId
             database.insert(n)
-            send_it(botToken, roomId, n)
 
             logdb.insert(log.log("New insert on object with incidentID of: " + incidentIddb))
         else:
@@ -91,3 +103,7 @@ def postToSpace(objectset, database, logdb, botToken, roomId):
                 send_it(botToken, roomId, n)
 
                 logdb.insert(log.log("New update on object with incidentID of: " + incidentIddb))
+
+#Remove post from Cisco Webex space thats doesnt exist on the Driftlage anymore.
+def removeStalePosts(db, objectset):
+    return True
