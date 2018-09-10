@@ -1,4 +1,4 @@
--e Servics
+-e servics
 requests
 flata
 pathlib
