@@ -103,7 +103,3 @@ def postToSpace(objectset, database, logdb, botToken, roomId):
                 send_it(botToken, roomId, n)
 
                 logdb.insert(log.log("New update on object with incidentID of: " + incidentIddb))
-
-#Remove post from Cisco Webex space thats doesnt exist on the Driftlage anymore.
-def removeStalePosts(db, objectset):
-    return True

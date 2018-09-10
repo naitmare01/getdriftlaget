@@ -2,6 +2,7 @@ import json
 from flata import Flata, Query, where
 from flata.storages import JSONStorage
 from . import log
+from . import webexTeams
 
 def initDb(dbPath, tableName):
     #Create db
@@ -28,7 +29,7 @@ def countLog(data, numberOfLogs):
         return False
 
 #Remove stale records from db that doesnt exist on the Driftlage.
-def removeStaleRecords(objectset, database, logdb):
+def removeStaleRecords(objectset, database, logdb, token):
     q = Query()
     for i in database.all():
         IncId = i["IncidentId"]
@@ -37,4 +38,8 @@ def removeStaleRecords(objectset, database, logdb):
 
         if not entryInDb:
             database.remove(q.IncidentId == IncId)
+            
+            #Remove post from Cisco Webex Teams that are no longer active
+            webexTeams.remove_it(token, i["msgId"])
+
             logdb.insert(log.log("New remove on object with incidentID of: " + IncId))

@@ -52,7 +52,7 @@ def main(sc):
     webexTeams.postToSpace(jsonForWebexTeams, db, logdb, botToken, roomId)
 
     #Remove objects from database that doesnt exist on the Driftlage and log action to database.
-    flataDb.removeStaleRecords(jsonForWebexTeams, db, logdb)
+    flataDb.removeStaleRecords(jsonForWebexTeams, db, logdb, botToken)
 
     #Purge logdata if over 100 entries.
     flataDb.cleanLogDb(logdb, logthreshold)
