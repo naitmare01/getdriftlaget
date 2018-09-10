@@ -6,3 +6,4 @@ Private
 __pycache__
 Custom_Python_modules_for_getDriftlaget.egg-info
 kubernetesDeployment.yaml
+mydb.json
