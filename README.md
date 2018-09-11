@@ -61,4 +61,4 @@ E.g. --database /usr/share/db/mydb.json
 ```
 
 ### Contributors
-[a Erik Ohlsson](https://github.com/nimok) for reviewing and modified the code to the better.
+[Erik Ohlsson](https://github.com/nimok) for reviewing and modified the code to the better.
