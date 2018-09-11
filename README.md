@@ -83,6 +83,8 @@ E.g. --database /usr/share/db/mydb.json
 
 * [Python3](https://www.python.org/) - The coding language
 * [Flata](https://github.com/harryho/flata) - The database enginge
+* [Request](http://docs.python-requests.org/en/master/) - The module to handle the api calls
+* [service](https://github.com/naitmare01/getdriftlaget/tree/master/services) - Custom module for this application
 
 ## Contributing
 
