@@ -3,6 +3,11 @@ from datetime import datetime
 from flata import Query, where
 from . import log
 
+#Remove whitespace from trailing and leading
+def remove_whitespace(text):
+    cleanedtext = text.rstrip().lstrip()
+
+    return cleanedtext
 
 #Send data to Cisco Teams space. 
 def send_it(token, room_id, message):
@@ -42,6 +47,9 @@ def buildJson(jsonObject):
         lastUpdated = n["Updated"]
         tags = ""
         incidentId = n["Id"]
+        
+        #Clean whitespace from subject to avoid formating error when posting to space.
+        subject = remove_whitespace(subject)
 
         if n["NewsType"]:
             type = type = n["NewsType"]["Name"]
