@@ -14,7 +14,7 @@ This Docker container can be run localy or in any of the cloud providers that ha
 - The bot needs to added to the space that should get notifications
 
 ```
-More info about Webex Teams and the API: [Webex Developer](https://developer.webex.com/)
+More info about Webex Teams and the API See Webex developer documentation - https://developer.webex.com/
 ```
 
 ### Installing
@@ -34,8 +34,8 @@ This instruction will clone the project to your local machine and start the bot.
 The bot will run every 30 second and post new updates to the Webex Teams Space specified in the parameter "roomid"
 
 ```
-1. [Install docker](https://docs.docker.com/v17.12/install/)
-2. [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+1. Install docker - https://docs.docker.com/v17.12/install/
+2. Install Git - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 3. Open bash, terminal or powershell
 4. mkdir gitprojects
 5. cd gitprojects
@@ -47,11 +47,11 @@ The bot will run every 30 second and post new updates to the Webex Teams Space s
 ## Mandatory parameters when running image
 ```
 --bottoken
-Access token for your bot. See [Webex Developer](https://developer.webex.com/)
+Access token for your bot. See Webex developer documentation - https://developer.webex.com/
 ```
 ```
 --roomid
-The room ID of the Webex Space. See [Webex Developer](https://developer.webex.com/)
+The room ID of the Webex Space. See Webex developer documentation - https://developer.webex.com/
 
 ```
 
