@@ -76,7 +76,7 @@ Full path to database file. Make sure to include file.json after the full path. 
 E.g. --database /usr/share/db/mydb.json
 
 ```
-
+### Example of output in a Webex Space
 <img src="https://raw.githubusercontent.com/naitmare01/getDriftlaget/master/Private/Screen%20Shot%202018-09-07%20at%2022.18.45.png" class="img-responsive" alt="">
 
 ## Built With
