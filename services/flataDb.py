@@ -40,6 +40,6 @@ def removeStaleRecords(objectset, database, logdb, token):
             database.remove(q.IncidentId == IncId)
             
             #Remove post from Cisco Webex Teams that are no longer active
-            webexTeams.remove_it(token, i["msgId"])
+            #webexTeams.remove_it(token, i["msgId"])
 
             logdb.insert(log.log("New remove on object with incidentID of: " + IncId))
