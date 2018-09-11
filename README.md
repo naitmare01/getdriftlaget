@@ -53,6 +53,12 @@ API URL to for the Church of Sweden current IT operation status(goo.gl/XXKFxQ). 
 --logthreshold
 Number of entries to be keep in the log database before the databse is purged. If left untouched default is 100 logs.
 ```
+```
+--database
+Full path to database file. Make sure to include file.json after the full path. If left untouched default is mydb.json.
+E.g. --database /usr/share/db/mydb.json
+
+```
 
 ### Contributors
 https://github.com/nimok for reviewing and modified the code to the better.
