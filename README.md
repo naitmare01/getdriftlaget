@@ -1,7 +1,7 @@
 # getdriftlaget
 getdriftlaget is a Docker container that polls the API for the Church of Sweden current IT operation status [Driftlaget](https://internwww.svenskakyrkan.se/Kanslist%C3%B6d/aktuellt-driftlage). Result is then posted in a Webex Temas Space from a Webex Teams Bot. Only new result will get posted, by default the API will be polled every 30 seconds. 
 
-<img src="https://github.com/naitmare01/getDriftlaget/blob/master/Private/Screen%20Shot%202018-09-07%20at%2022.18.45.png" class="img-responsive" alt=""> </div>
+<img src="https://github.com/naitmare01/getDriftlaget/blob/master/Private/Screen%20Shot%202018-09-07%20at%2022.18.45.png" class="img-responsive" alt="">
 
 **The container must be run with two arguments.**
 
