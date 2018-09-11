@@ -9,7 +9,8 @@ def arguments():
     group.add_argument('-a', '--all', action='store_true', help='List all tables in databse.')
     group.add_argument('-l', '--log', action='store_true', help='List the table named "Log".')
     group.add_argument('-d', '--driftlaget', action='store_true', help='List the table named "driftlaget".')
-    
+    parser.add_argument('-db', '--database', help='Full path to database file. Make sure to include file.json after the full path. If left untouched default is mydb.json', default='mydb.json')
+
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
@@ -22,7 +23,7 @@ def main():
     args = arguments()
 
     #Variables
-    dbPath = "mydb.json"
+    dbPath = args.database
 
     if args.all:
         tables = 'driftlaget', 'log'

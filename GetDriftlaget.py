@@ -13,6 +13,7 @@ def arguments():
     parser.add_argument('-p', '--pollinginterval', help='The polling intervall in seconds. If left untouched default is 30.', type=int, default=30)
     parser.add_argument('-u', '--url', help='API URL to for the Church of Sweden current IT operation status(goo.gl/XXKFxQ). If left untouched default is https://webapp.svenskakyrkan.se/driftlaget/v2/api/news', default='https://webapp.svenskakyrkan.se/driftlaget/v2/api/news')
     parser.add_argument('-lt', '--logthreshold', help='Number of entries to be keep in the log database before the databse is purged. If left untouched default is 100', type=int, default=100)
+    parser.add_argument('-db', '--database', help='Full path to database file. Make sure to include file.json after the full path. If left untouched default is mydb.json', default='mydb.json')
 
     args = parser.parse_args()
 
@@ -33,7 +34,7 @@ def main(sc):
     roomId = args.roomid
     pollingInterval = args.pollinginterval
     logthreshold = args.logthreshold
-    dbPath = "mydb.json"
+    dbPath = args.database
     dbTableName = "driftlaget"
     logdbTableName = "log"
 
