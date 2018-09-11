@@ -86,7 +86,7 @@ E.g. --database /usr/share/db/mydb.json
 
 ## Contributing
 
-Open a new issue with the label [contributin](https://github.com/naitmare01/getdriftlaget/labels/contributing) and we'll get in touch!
+Open a new issue with the label [contributing](https://github.com/naitmare01/getdriftlaget/labels/contributing) and we'll get in touch!
 
 ## Versioning
 
