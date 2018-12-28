@@ -1,72 +1,65 @@
-import sched, sys, argparse, time
-from sys import argv
-from services import webexTeams, flataDb, driftlagetApi, log
+import sched
+import argparse
+import time
+from services import webex_teams, flataDb, driftlagetApi, log
 
 #Handle command line arguments
 def arguments():
-    #Handle command line arguments
+
     parser = argparse.ArgumentParser(description='Calls the API for https://internwww.svenskakyrkan.se/Kanslist%C3%B6d/aktuellt-driftlage. And post the result in a Webex Space.')
 
-    requiredNamed = parser.add_argument_group('required named arguments')
-    requiredNamed.add_argument('-b', '--bottoken', help='Access token for your bot.', required=True)
-    requiredNamed.add_argument('-r', '--roomid', help='The room ID.', required=True)
+    required_named = parser.add_argument_group('required named arguments')
+    required_named.add_argument('-b', '--bottoken', help='Access token for your bot.', required=True)
+    required_named.add_argument('-r', '--roomid', help='The room ID.', required=True)
     parser.add_argument('-p', '--pollinginterval', help='The polling intervall in seconds. If left untouched default is 30.', type=int, default=30)
     parser.add_argument('-u', '--url', help='API URL to for the Church of Sweden current IT operation status(goo.gl/XXKFxQ). If left untouched default is https://webapp.svenskakyrkan.se/driftlaget/v2/api/news', default='https://webapp.svenskakyrkan.se/driftlaget/v2/api/news')
     parser.add_argument('-lt', '--logthreshold', help='Number of entries to be keep in the log database before the databse is purged. If left untouched default is 100', type=int, default=100)
     parser.add_argument('-db', '--database', help='Full path to database file. Make sure to include file.json after the full path. If left untouched default is mydb.json', default='mydb.json')
 
-    args = parser.parse_args()
-
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(2)
-
-    return args
+    return parser.parse_args()
 
 #Main
-def main(sc):
-
-    #args = arguments()
+def main(script_scheduler):
+    args = arguments()
 
     #Var declaration
-    DriftlagetUrl = args.url
-    botToken = args.bottoken
-    roomId = args.roomid
-    pollingInterval = args.pollinginterval
+    driftlageturl = args.url
+    bot_token = args.bottoken
+    room_id = args.roomid
+    polling_interval = args.pollinginterval
     logthreshold = args.logthreshold
-    dbPath = args.database
-    dbTableName = "driftlaget"
-    logdbTableName = "log"
+    db_path = args.database
+    db_table_name = "driftlaget"
+    logdb_table_name = "log"
 
     #Get data from driftlaget.
-    publishedMessages = driftlagetApi.getPublishedMessages(DriftlagetUrl)
-    jsonForWebexTeams = webexTeams.buildJson(publishedMessages)
+    published_messages = driftlagetApi.getPublishedMessages(driftlageturl)
+    json_for_webex_teams = webex_teams.build_json(published_messages)
 
     #Start and initialize database with two tables
-    db = flataDb.initDb(dbPath, dbTableName)
-    logdb = flataDb.initDb(dbPath, logdbTableName)
+    database_file = flataDb.initDb(db_path, db_table_name)
+    logdb = flataDb.initDb(db_path, logdb_table_name)
 
     #Log to database
     logdb.insert(log.log("Starting script"))
 
     #Post into Webex space and update database.
-    webexTeams.postToSpace(jsonForWebexTeams, db, logdb, botToken, roomId)
+    webex_teams.post_to_space(json_for_webex_teams, database_file, logdb, bot_token, room_id)
 
     #Remove objects from database that doesnt exist on the Driftlage and log action to database.
-    flataDb.removeStaleRecords(jsonForWebexTeams, db, logdb, botToken)
+    flataDb.removeStaleRecords(json_for_webex_teams, database_file, logdb, bot_token)
 
     #Purge logdata if over 100 entries.
     flataDb.cleanLogDb(logdb, logthreshold)
 
     #Restart the script.
     logdb.insert(log.log("Restarting script"))
-    s.enter(pollingInterval, 1, main, (sc,))
+    S.enter(polling_interval, 1, main, (script_scheduler,))
 
 if __name__ == '__main__':
-    args = arguments()
     # sched is used to schedule main function every 30 seconds.
     # for that once  main function executes in end,
     # we again schedule it to run in 30 seconds
-    s = sched.scheduler(time.time, time.sleep)
-    s.enter(args.pollinginterval, 1, main, (s,))
-    s.run()
+    S = sched.scheduler(time.time, time.sleep)
+    S.enter(arguments().pollinginterval, 1, main, (S,))
+    S.run()
