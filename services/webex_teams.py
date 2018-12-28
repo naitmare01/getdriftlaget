@@ -14,15 +14,7 @@ def remove_whitespace(text):
 def send_it(token, room_id, message):
     header = {"Authorization": "Bearer %s" % token, "Content-Type": "application/json"}
 
-    data = {"roomId": room_id,
-            "markdown": ">* **" + message["Subject"] + "** "
-            + " \n " + message["Type"]
-            + "  \n" + " Starttid: " + message["StartDate"]
-            + "  \n" + " Sluttid: " + message["EndDate"]
-            + "  \n" + "Senast uppdaterad: " + message["LastUpdated"]
-            + "  \n" + "Kategori: " + message["Categories"]
-            + "  \n" + "IncidentID: " + message["IncidentId"]
-            }
+    data = {"roomId": room_id, "markdown": ">* **" + message["Subject"] + "** " + " \n " + message["Type"] + "  \n" + " Starttid: " + message["StartDate"] + "  \n" + " Sluttid: " + message["EndDate"] + "  \n" + "Senast uppdaterad: " + message["LastUpdated"] + "  \n" + "Kategori: " + message["Categories"] + "  \n" + "IncidentID: " + message["IncidentId"]}
     return requests.post("https://api.ciscospark.com/v1/messages/", headers=header, data=json.dumps(data), verify=True)
 
 #Remove post from Cisco Webex teams.

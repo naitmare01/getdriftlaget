@@ -1,7 +1,7 @@
 import argparse
 import json
 import sys
-from services import flataDb
+from services import flata_db
 
 def arguments():
     #Handle command line arguments
@@ -30,19 +30,19 @@ def main():
     if args.all:
         tables = 'driftlaget', 'log'
         for i in tables:
-            database_file = flataDb.initDb(db_path, i)
+            database_file = flata_db.init_db(db_path, i)
             response = database_file.all()
             print("Reading data from table:", i, '\n', json.dumps(response, indent=2))
 
     if args.log:
         tables = 'log'
-        database_file = flataDb.initDb(db_path, tables)
+        database_file = flata_db.init_db(db_path, tables)
         response = database_file.all()
         print("Reading data from table:", tables, '\n', json.dumps(response, indent=2))
 
     if args.driftlaget:
         tables = 'driftlaget'
-        database_file = flataDb.initDb(db_path, tables)
+        database_file = flata_db.init_db(db_path, tables)
         response = database_file.all()
         print("Reading data from table:", tables, '\n', json.dumps(response, indent=2))
 
