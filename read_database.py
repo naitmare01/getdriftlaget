@@ -1,4 +1,6 @@
-import argparse, json,sys
+import argparse
+import json
+import sys
 from services import flataDb
 
 def arguments():
@@ -16,34 +18,34 @@ def arguments():
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(2)
-    
+
     return args
 
 def main():
     args = arguments()
 
     #Variables
-    dbPath = args.database
+    db_path = args.database
 
     if args.all:
         tables = 'driftlaget', 'log'
         for i in tables:
-            db = flataDb.initDb(dbPath, i)
-            response = db.all()
+            database_file = flataDb.initDb(db_path, i)
+            response = database_file.all()
             print("Reading data from table:", i, '\n', json.dumps(response, indent=2))
-    
+
     if args.log:
         tables = 'log'
-        db = flataDb.initDb(dbPath, tables)
-        response = db.all()
+        database_file = flataDb.initDb(db_path, tables)
+        response = database_file.all()
         print("Reading data from table:", tables, '\n', json.dumps(response, indent=2))
 
     if args.driftlaget:
         tables = 'driftlaget'
-        db = flataDb.initDb(dbPath, tables)
-        response = db.all()
+        database_file = flataDb.initDb(db_path, tables)
+        response = database_file.all()
         print("Reading data from table:", tables, '\n', json.dumps(response, indent=2))
 
 
 if __name__ == '__main__':
-  main()
+    main()
