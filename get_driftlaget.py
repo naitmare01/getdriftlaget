@@ -32,10 +32,6 @@ def main(script_scheduler):
     db_table_name = "driftlaget"
     logdb_table_name = "log"
 
-    #Get data from driftlaget.
-    published_messages = driftlaget_api.get_published_messages(driftlageturl)
-    json_for_webex_teams = webex_teams.build_json(published_messages)
-
     #Start and initialize database with two tables
     database_file = flata_db.init_db(db_path, db_table_name)
     logdb = flata_db.init_db(db_path, logdb_table_name)
@@ -43,18 +39,28 @@ def main(script_scheduler):
     #Log to database
     logdb.insert(log.log("Starting script"))
 
-    #Post into Webex space and update database.
-    webex_teams.post_to_space(json_for_webex_teams, database_file, logdb, bot_token, room_id)
+    #Get data from driftlaget.
+    published_messages = driftlaget_api.get_published_messages(driftlageturl)
 
-    #Remove objects from database that doesnt exist on the Driftlage and log action to database.
-    flata_db.remove_stale_records(json_for_webex_teams, database_file, logdb)
+    if published_messages is not False:
+        json_for_webex_teams = webex_teams.build_json(published_messages)
 
-    #Purge logdata if over 100 entries.
-    flata_db.clean_log_db(logdb, logthreshold)
+        #Post into Webex space and update database.
+        webex_teams.post_to_space(json_for_webex_teams, database_file, logdb, bot_token, room_id)
 
-    #Restart the script.
-    logdb.insert(log.log("Restarting script"))
-    S.enter(polling_interval, 1, main, (script_scheduler,))
+        #Remove objects from database that doesnt exist on the Driftlage and log action to database.
+        flata_db.remove_stale_records(json_for_webex_teams, database_file, logdb)
+
+        #Purge logdata if over 100 entries.
+        flata_db.clean_log_db(logdb, logthreshold)
+
+        #Restart the script.
+        logdb.insert(log.log("Restarting script"))
+        S.enter(polling_interval, 1, main, (script_scheduler,))
+    else:
+        #Restart the script.
+        logdb.insert(log.log("ERROR: No output from api-call. Restarting script."))
+        S.enter(polling_interval, 1, main, (script_scheduler,))
 
 if __name__ == '__main__':
     # sched is used to schedule main function every 30 seconds.
