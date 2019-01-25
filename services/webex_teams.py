@@ -15,7 +15,7 @@ def send_it(token, room_id, message):
     header = {"Authorization": "Bearer %s" % token, "Content-Type": "application/json"}
 
     data = {"roomId": room_id, "markdown": ">* **" + message["Subject"] + "** " + " \n " + message["Type"] + "  \n" + " Starttid: " + message["StartDate"] + "  \n" + " Sluttid: " + message["EndDate"] + "  \n" + "Senast uppdaterad: " + message["LastUpdated"] + "  \n" + "Kategori: " + message["Categories"] + "  \n" + "IncidentID: " + message["IncidentId"]}
-    return requests.post("https://api.ciscospark.com/v1/messages/", headers=header, data=json.dumps(data), verify=True)
+    return requests.post("https://api.ciscospark.com/v1/messages/", headers=header, data=json.dumps(data), verify=True, timeout=10)
 
 #Remove post from Cisco Webex teams.
 def remove_it(token, message_id):
@@ -23,7 +23,7 @@ def remove_it(token, message_id):
 
     headers = {"Authorization": "Bearer %s" % token}
 
-    response = requests.request("DELETE", url, headers=headers)
+    response = requests.request("DELETE", url, headers=headers, timeout=10)
 
     return response.text
 
